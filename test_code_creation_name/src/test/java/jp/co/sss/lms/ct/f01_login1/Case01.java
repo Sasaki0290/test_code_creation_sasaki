@@ -38,7 +38,7 @@ public class Case01 {
 	void test01() {
 		// TODO ここに追加
 		String url = "http://localhost:8080/lms/";
-		System.out.println(url);
+		String title = "ログイン | LMS";
 
 		// トップページへ遷移
 		goTo(url);
@@ -47,7 +47,7 @@ public class Case01 {
 		getEvidence(new Object() {
 		});
 
-		assertEquals(url, webDriver.getCurrentUrl());
+		assertEquals(title, webDriver.getTitle());
 	}
 
 }
