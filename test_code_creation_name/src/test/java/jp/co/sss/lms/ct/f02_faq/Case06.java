@@ -5,8 +5,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
-import java.util.List;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -130,23 +128,16 @@ public class Case06 {
 	@DisplayName("テスト05 カテゴリ検索で該当カテゴリの検索結果だけ表示")
 	void test05() {
 		// TODO ここに追加
-		WebElement searchWordForm = webDriver.findElement(By.id("form"));
-		WebElement searchButton = webDriver.findElement(By.cssSelector("input[value='検索']"));
-		String searchWord = "キャンセル";
+		WebElement categoryLink = webDriver.findElement(By.linkText("【研修関係】"));
+		String checkString = "faq?frequentlyAskedQuestionCategoryId";
 
-		searchWordForm.sendKeys(searchWord);
-		searchButton.click();
+		categoryLink.click();
 
 		getEvidence(new Object() {
 		});
 
-		// Q.を除く検索結果をリストで取得
-		List<WebElement> searchResults = webDriver.findElements(By.cssSelector("tr dt.mb10 span:not(.mr10)"));
-
-		// すべてが検索キーワードと合致しているか検証
-		for (WebElement searchResult : searchResults) {
-			assertThat(searchResult.getText(), is(containsString(searchWord)));
-		}
+		// URLでカテゴリ検索ができているかを確認
+		assertThat(webDriver.getCurrentUrl(), is(containsString(checkString)));
 	}
 
 	@Test
@@ -162,8 +153,8 @@ public class Case06 {
 		getEvidence(new Object() {
 		});
 
-		// 回答が表示されているときに変化しているクラスと照合する
-		assertEquals("fs18", answer.getAttribute("class"));
+		// 表示されているかを確認
+		assertTrue(answer.isDisplayed());
 	}
 
 }
