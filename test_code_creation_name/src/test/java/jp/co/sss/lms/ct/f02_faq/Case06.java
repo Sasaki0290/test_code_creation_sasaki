@@ -5,6 +5,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -129,15 +131,19 @@ public class Case06 {
 	void test05() {
 		// TODO ここに追加
 		WebElement categoryLink = webDriver.findElement(By.linkText("【研修関係】"));
-		String checkString = "faq?frequentlyAskedQuestionCategoryId";
+		String[] checkStrings = { "キャンセル料・途中退校について", "研修の申し込みはどのようにすれば良いですか？" };
 
 		categoryLink.click();
 
 		getEvidence(new Object() {
 		});
 
-		// URLでカテゴリ検索ができているかを確認
-		assertThat(webDriver.getCurrentUrl(), is(containsString(checkString)));
+		List<WebElement> searchResults = webDriver.findElements(By.cssSelector("tr dt.mb10 span:not(.mr10)"));
+
+		// カテゴリ検索で表示された内容がDB上のカテゴリと一致しているか
+		for (int i = 0; i < searchResults.size(); i++) {
+			assertThat(searchResults.get(i).getText(), is(containsString(checkStrings[i])));
+		}
 	}
 
 	@Test
